@@ -1,0 +1,147 @@
+<div class="content" *ngIf="contentData && contentData.formItems">
+  <div class="row">
+    <div class="col-md-24">
+        <h3>{{contentData.title}}</h3>
+    </div> 
+  </div>
+  <div class="row">
+    <div class="col-md-24" *ngFor="let formItem of contentData.formItems">
+      <!-- text, number, date -->
+      <div *ngIf="showAble(contentData, formItem) && (formItem.type=='text'||formItem.type=='number'||formItem.type=='date')"  class="form-group padding-top-20 {{formItem.follow?'padding-left-20':''}}">
+          <label>{{formItem.label}}</label>
+          <input type="{{formItem.type}}" [(ngModel)]="formItem.value" [readonly]="tabindex!=0">
+      </div>
+
+      <!-- file -->
+      <div *ngIf="showAble(contentData, formItem) && (formItem.type=='file')"  class="form-group padding-top-20 {{formItem.follow?'padding-left-20':''}}">
+          <label>{{formItem.label}}</label>
+          <div style="cursor: pointer;line-height: 25px;">
+              <label style="display: inline-block;border: solid 1px #aaa;background-color: #ccc;line-height: 25px;margin: 0;padding: 0 10px;">
+                  <span>Choose file...</span>
+                  <input type="{{formItem.type}}" (change)="attachFileChanged(formItem, $event.target.files)" style="visibility: hidden;display: none;">
+              </label>
+              <span>{{formItem.filename}}</span>
+          </div>
+      </div>
+
+      <!-- textarea -->
+      <div *ngIf="showAble(contentData, formItem) && formItem.type=='textarea'" class="form-group padding-top-20 {{formItem.follow?'padding-left-20':''}}" >
+          <label>{{formItem.label}}</label>
+          <textarea rows="4" [(ngModel)]="formItem.value" [readonly]="tabindex!=0">{{formItem.value}}</textarea>
+      </div>
+
+      <!-- checkbox -->
+      <div *ngIf="showAble(contentData, formItem) && formItem.type=='checkbox'" class="sme-checkbox padding-top-20 {{formItem.follow?'padding-left-20':''}}">
+        <label>
+          <input type="{{formItem.type}}" [checked]="formItem.checked" (change)="checkboxChanged(contentData, formItem)" name="{{formItem.name}}" [disabled]="tabindex!=0">
+          <span > {{formItem.label}}</span>
+        </label>
+      </div>
+
+      <!-- radio -->
+      <div *ngIf="showAble(contentData, formItem) && formItem.type=='radio'" class="sme-radio padding-top-20 {{formItem.follow?'padding-left-20':''}}">
+        <label>
+          <input type="{{formItem.type}}" [checked]="formItem.checked" (change)="radioActived(contentData, formItem)" name="{{formItem.name}}" [disabled]="tabindex!=0">
+          <span>{{formItem.label}}</span>
+        </label>
+      </div>
+
+      <!-- select -->
+      <div *ngIf="showAble(contentData, formItem) && formItem.type=='select'"  class="form-group padding-top-20 {{formItem.follow?'padding-left-20':''}}">
+          <label class="form-check-label">{{formItem.label}}</label>
+          
+          <div class="sme-select">
+            <select [(ngModel)]="formItem.value" [disabled]="tabindex!=0">
+                <option *ngFor="let opt of formItem.options" value="{{opt.id}}" [selected]="formItem.value == opt.id">{{opt.label}}</option>
+            </select>
+          </div>
+      </div>
+
+      <!-- label -->
+      <div *ngIf="showAble(contentData, formItem) && formItem.type=='label'" class="form-group form-check padding-top-20 {{formItem.follow?'padding-left-20':''}}">
+          <label class="form-block-label">{{formItem.label}}</label>
+      </div>
+
+      <!-- range -->
+      <div *ngIf="showAble(contentData, formItem) && formItem.type=='range'" class="form-group padding-top-20 {{formItem.follow?'padding-left-20':''}}" >
+          <input type="range" [value]="formItem.value" [(ngModel)]="formItem.value" min="{{formItem.min}}" max="{{formItem.max}}" step="1" style="width:100%;" [readonly]="tabindex!=0">
+          <output>{{formItem.value}}</output>
+      </div>
+
+      <!-- horizontal input, select, textarea so on ... -->
+      <div *ngIf="showAble(contentData, formItem) && (formItem.type && formItem.type.indexOf('horizontal_')>-1)"  class="form-group padding-top-20 row {{formItem.follow?'padding-left-20':''}}">
+          <label class="col-sm-10 col-form-label">{{formItem.label}}</label>
+          <div class="col-sm-14">
+            
+              <div class="sme-select" *ngIf="formItem.type=='horizontal_select'">
+                  <select [(ngModel)]="formItem.value" [disabled]="tabindex!=0">
+                      <option *ngFor="let opt of formItem.options" value="{{opt.id}}" [selected]="formItem.value == opt.id">{{opt.label}}</option>
+                  </select>
+              </div>
+              <textarea *ngIf="formItem.type=='horizontal_textarea'" class="form-control" [(ngModel)]="formItem.value" [readonly]="tabindex!=0">{{formItem.value}}</textarea>
+              <input *ngIf="formItem.type=='horizontal_input'||formItem.type=='horizontal_text'||formItem.type=='horizontal_checkbox'||formItem.type=='horizontal_number'||formItem.type=='horizontal_radio'||formItem.type=='horizontal_date'||formItem.type=='horizontal_password'"
+                      type="{{formItem.type.substr(11)}}" class="form-control" [(ngModel)]="formItem.value" [readonly]="tabindex!=0">
+          </div>
+      </div>
+
+      <!-- form item_control -->
+      
+      <!-- form item_control -->
+      <div *ngIf="showAble(contentData, formItem) && formItem.type=='list_control'"  class="form-group padding-top-20 row {{formItem.follow?'padding-left-20':''}}">
+          <div *ngFor="let itemv of formItem.lists; let listitemi=index;" class="sme-margin-bottom-sm">
+              <input type="text" [(ngModel)]="itemv.label" required readonly>
+          </div>    
+      </div>
+
+
+
+      <!-- child counter -->
+      <div class="form-group padding-top-20" *ngIf="showAble(contentData, formItem) && formItem.type=='child_counter'" >
+          <label>{{formItem.label}}</label>
+          <input type="text" value="{{formItem.navItems?formItem.navItems.length:''}}" readonly />
+      </div>
+      
+      <!-- harddisk_list table  -->
+      <sme-master-view #harddiskView header="" *ngIf="formItem.type=='harddisk_list'">
+        <sme-data-table #harddiskTable [items]="formItem.list">
+          <sme-data-table-column field="adapter" header="Adapter" sortable="false" [searchable]="false"></sme-data-table-column>
+          <sme-data-table-column field="name" header="Name" sortable="false" [searchable]="false"></sme-data-table-column>
+          <sme-data-table-column field="new_exists" header="New / Existing" sortable="false" [searchable]="false"></sme-data-table-column>
+          <sme-data-table-column field="path" header="Path" sortable="false" [searchable]="false"></sme-data-table-column>
+          <sme-data-table-column field="virtual_disk_name" header="Virtual Disk Name" sortable="false" [searchable]="false"></sme-data-table-column>
+          <sme-data-table-column field="virtual_disk_type" header="Virtual Disk Type" sortable="false" [searchable]="false"></sme-data-table-column>
+          <sme-data-table-column field="virtual_disk_size" header="Virtual Disk Size" sortable="false" [searchable]="false"></sme-data-table-column>
+          <sme-data-table-column field="scsi_id" header="SCSI ID" sortable="false" [searchable]="false"></sme-data-table-column>
+        </sme-data-table>
+      </sme-master-view>
+
+      <!-- network_list table  -->
+      <sme-master-view #networkView header="" *ngIf="formItem.type=='network_list'">
+        <sme-data-table #networkTable [items]="formItem.list">
+          <sme-data-table-column field="name" header="Name" sortable="false" [searchable]="false"></sme-data-table-column>
+          <sme-data-table-column field="connectivity" header="Connectivity" sortable="false" [searchable]="false"></sme-data-table-column>
+          <sme-data-table-column field="virtual_switch" header="Virtual Switch" sortable="false" [searchable]="false">
+            <ng-template let-data>
+              <div class="sme-select" *ngIf="data && data.connectivity=='Connected'">
+                  <select>
+                      <option value="{{vsitem.id}}" *ngFor="let vsitem of vswitchdata">{{vsitem.label}}</option>
+                  </select>
+              </div>
+            </ng-template>
+          </sme-data-table-column>
+          <sme-data-table-column field="vlan_id" header="VLAN ID" sortable="false" [searchable]="false"></sme-data-table-column>
+        </sme-data-table>
+      </sme-master-view>
+
+      <!-- fibchannel table  -->
+      <sme-master-view #fibchannelView header="" *ngIf="formItem.type=='fibchannel_list'">
+        <sme-data-table #fibchannelTable [items]="formItem.list">
+          <sme-data-table-column field="adapter" header="Adapter" sortable="false" [searchable]="false"></sme-data-table-column>
+          <sme-data-table-column field="name" header="Name" sortable="false" [searchable]="false"></sme-data-table-column>
+          <sme-data-table-column field="connectivity" header="Connectivity" sortable="false" [searchable]="false"></sme-data-table-column>
+          <sme-data-table-column field="fibre_channel_san" header="Fibre Channel SAN" sortable="false" [searchable]="false"></sme-data-table-column>
+        </sme-data-table>
+      </sme-master-view>
+    </div>
+  </div>
+</div>

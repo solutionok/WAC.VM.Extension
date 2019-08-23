@@ -1,0 +1,23 @@
+<sme-dialog #dialog dialogMode="pane">
+    <sme-dialog-header>
+        <h3 id="sme-dialog-title">Add devices to SCSI Adapter</h3>
+    </sme-dialog-header>
+    <sme-dialog-content>
+        <form #formCtrl="ngForm" [formGroup]="AdapterForm">
+            <sme-form-field type="checkbox" formControlName="hddcheck" [label]="'Hard Disk'">
+                <ng-template>
+                    <sme-form-field type="number" formControlName="hddcount" [label]="'Quantity'" min="1" max="65" style="width:50px"></sme-form-field>
+                </ng-template>
+            </sme-form-field>
+            <sme-form-field type="checkbox" formControlName="dvdcheck" [label]="'DVD Drive'" >
+                <ng-template>
+                    <sme-form-field type="number" formControlName="dvdcount" [label]="'Quantity'" min="1" max="65" style="width:50px"></sme-form-field>
+                </ng-template>
+            </sme-form-field>
+        </form>
+    </sme-dialog-content>
+    <sme-dialog-footer class="sme-layout-float-right">
+        <button type="button" (click)="onClose()">Close</button>
+        <button type="button" class="sme-button-primary" (click)="addNew()">Save changes</button>
+    </sme-dialog-footer>
+</sme-dialog>

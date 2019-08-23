@@ -1,0 +1,13 @@
+{
+    "//": "manifest section",
+    "WACDevTeamVirtualMachineTemplateManager_Manifest_displayName": "VirtualMachineTemplateManager",
+    "WACDevTeamVirtualMachineTemplateManager_Manifest_description": "{!product-description}",
+    "WACDevTeamVirtualMachineTemplateManager_Manifest_keywords": "SME",
+
+    "//": "VirtualMachineTemplateManager",
+    "WACDevTeamVirtualMachineTemplateManager_title": "VirtualMachineTemplateManager",
+
+    "//": "about",
+    "WACDevTeamVirtualMachineTemplateManager_about": "{!product-about}",
+    "WACDevTeamVirtualMachineTemplateManager_aboutDescription": "{!product-about-description}"
+}

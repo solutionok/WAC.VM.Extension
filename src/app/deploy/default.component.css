@@ -1,0 +1,53 @@
+.prev-btn,
+.next-btn {
+    width: 100px;
+}
+
+.breadcrumb {
+    margin: 5px 0 10px;
+}
+
+.tabbar {
+    border-bottom: 1px solid lightgrey;
+    margin-bottom: 10px;
+}
+
+.tab-item {
+    display: inline-block;
+    font-size: 15px;
+    text-align: center;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-bottom: 0;
+    padding: 2px 10px;
+    cursor: pointer;
+    color:#555;
+}
+
+.tab-item:first-child {
+    margin-left: 0px;
+}
+
+.tab-item.active {
+    border-bottom: 2px solid #0067b8;
+    color: #000;
+}
+
+.content {
+    padding: 0 15px;
+}
+
+a.active-nav{
+    color:#000;
+    font-weight: 600;
+}
+.leftpanel-ul{
+    border-right:solid 1px #ccc;
+    min-height: 400px;
+    font-size:13px;
+    color:#555;
+}
+.leftpanel-ul li{
+    padding: 5px 0px 5px 5px;
+    margin: 0;
+}

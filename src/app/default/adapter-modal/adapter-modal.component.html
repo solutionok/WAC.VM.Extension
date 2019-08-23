@@ -1,0 +1,19 @@
+<sme-dialog #dialog dialogMode="pane" fullScreenLeftDistance="50%">
+    <sme-dialog-header>
+        <h3 id="sme-dialog-title">Add SCSI Adapter</h3>
+    </sme-dialog-header>
+    <sme-dialog-content>
+        <form #formCtrl="ngForm" [formGroup]="adapterTypeForm">
+            <sme-form-field type="combobox" formControlName="adapterType" label="SCSI Adapter type">
+                <sme-option *ngFor="let opt of adapterType; let i=index" [value]="opt.id" [label]="opt.label"></sme-option>
+            </sme-form-field>
+        </form>
+    </sme-dialog-content>
+    <sme-dialog-footer class="sme-layout-float-right">
+        <!-- <button type="button" class="sme-button-primary">ccccccc</button>
+        <button type="button">aaaaaaa</button> -->
+        
+        <button type="button" (click)="onClose()">Close</button>
+        <button type="button" class="sme-button-primary" (click)="addNew()">Save changes</button>
+    </sme-dialog-footer>
+</sme-dialog>

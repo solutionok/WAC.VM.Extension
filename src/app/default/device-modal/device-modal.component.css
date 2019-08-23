@@ -1,0 +1,34 @@
+
+
+.full-width {
+    width: 100%;
+}
+
+.padding-top-20 {
+    padding-top: 20px;
+}
+
+.padding-left-20 {
+    padding-left: 20px;
+}
+
+.padding-right-20 {
+    padding-right: 20px;
+}
+
+.padding-bottom-20 {
+    padding-bottom: 20px;
+}
+
+.form-check-label{
+    vertical-align: middle;
+}
+
+.form-check-label input[type="checkbox"]{
+    -webkit-appearance: checkbox;
+    margin-top: 0;
+}
+.form-check-label input[type="radio"]{
+    -webkit-appearance: radio;
+    margin-top: 0;
+}

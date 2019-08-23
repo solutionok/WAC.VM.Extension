@@ -1,0 +1,127 @@
+<div class="content" *ngIf="contentData && contentData.formItems">
+    <div class="row">
+        <div class="col-md-24">
+            <h3>{{contentData.title}}</h3>
+        </div>
+    </div> 
+    <div class="row">
+        <div class="col-md-24" *ngFor="let formItem of contentData.formItems">
+            <!-- text, number, date -->
+            <div *ngIf="showAble(contentData, formItem) && (formItem.type=='text'||formItem.type=='number'||formItem.type=='date')"  class="form-group padding-top-20 {{formItem.follow?'padding-left-20':''}}">
+                <label>{{formItem.label}}</label>
+                <input type="{{formItem.type}}" [(ngModel)]="formItem.value" [readonly]="formItem.readonly===true">
+            </div>
+
+            <!-- file -->
+            <div *ngIf="showAble(contentData, formItem) && (formItem.type=='file')"  class="form-group padding-top-20 {{formItem.follow?'padding-left-20':''}}">
+                <label>{{formItem.label}}</label>
+                <div style="cursor: pointer;line-height: 25px;">
+                    <label style="display: inline-block;border: solid 1px #aaa;background-color: #ccc;line-height: 25px;margin: 0;padding: 0 10px;">
+                        <span>Choose file...</span>
+                        <input type="{{formItem.type}}" (change)="attachFileChanged(formItem, $event.target.files)" style="visibility: hidden;display: none;">
+                    </label>
+                    <span>{{formItem.filename}}</span>
+                </div>
+            </div>
+
+            <!-- textarea -->
+            <div *ngIf="showAble(contentData, formItem) && formItem.type=='textarea'" class="form-group padding-top-20 {{formItem.follow?'padding-left-20':''}}" >
+                <label>{{formItem.label}}</label>
+                <textarea rows="4" [(ngModel)]="formItem.value">{{formItem.value}}</textarea>
+            </div>
+
+            <!-- checkbox -->
+            <div *ngIf="showAble(contentData, formItem) && formItem.type=='checkbox'" class="sme-checkbox padding-top-20 {{formItem.follow?'padding-left-20':''}}">
+              <label>
+                <input type="{{formItem.type}}" [checked]="formItem.checked" (change)="checkboxChanged(contentData, formItem)" name="{{formItem.name}}">
+                <span > {{formItem.label}}</span>
+              </label>
+            </div>
+
+            <!-- radio -->
+            <div *ngIf="showAble(contentData, formItem) && formItem.type=='radio'" class="sme-radio padding-top-20 {{formItem.follow?'padding-left-20':''}}">
+              <label>
+                <input type="{{formItem.type}}" [checked]="formItem.checked" (change)="radioActived(contentData, formItem)" name="{{formItem.name}}">
+                <span>{{formItem.label}}</span>
+              </label>
+            </div>
+
+            <!-- select -->
+            <div *ngIf="showAble(contentData, formItem) && formItem.type=='select'"  class="form-group padding-top-20 {{formItem.follow?'padding-left-20':''}}">
+                <label class="form-check-label">{{formItem.label}}</label>
+                
+                <div class="sme-select">
+                    <select [(ngModel)]="formItem.value">
+                        <option *ngFor="let opt of formItem.options" value="{{opt.id}}" [selected]="formItem.value == opt.id">{{opt.label}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- label -->
+            <div *ngIf="showAble(contentData, formItem) && formItem.type=='label'" class="form-group form-check padding-top-20 {{formItem.follow?'padding-left-20':''}}">
+                <label class="form-block-label">{{formItem.label}}</label>
+            </div>
+
+            <!-- range -->
+            <div *ngIf="showAble(contentData, formItem) && formItem.type=='range'" class="form-group padding-top-20 {{formItem.follow?'padding-left-20':''}}" >
+                <input type="range" [value]="formItem.value" [(ngModel)]="formItem.value" min="{{formItem.min}}" max="{{formItem.max}}" step="{{formItem.step?formItem.step:1}}" style="width:100%;">
+                <output>{{formItem.value}}</output>
+            </div>
+
+            <!-- horizontal input, select, textarea so on ... -->
+            <div *ngIf="showAble(contentData, formItem) && (formItem.type && formItem.type.indexOf('horizontal_')>-1)"  class="form-group padding-top-20 row {{formItem.follow?'padding-left-20':''}}">
+                <label class="col-sm-10 col-form-label">{{formItem.label}}</label>
+                <div class="col-sm-14">
+                    <div class="sme-select" *ngIf="formItem.type=='horizontal_select'">
+                        <select [(ngModel)]="formItem.value" class="form-control">
+                            <option *ngFor="let opt of formItem.options" value="{{opt.id}}" [selected]="formItem.value == opt.id">{{opt.label}}</option>
+                        </select>
+                    </div>
+                    <textarea *ngIf="formItem.type=='horizontal_textarea'" class="form-control" [(ngModel)]="formItem.value">{{formItem.value}}</textarea>
+                    <input *ngIf="formItem.type=='horizontal_input'||formItem.type=='horizontal_text'||formItem.type=='horizontal_checkbox'||formItem.type=='horizontal_number'||formItem.type=='horizontal_radio'||formItem.type=='horizontal_date'"
+                            type="{{formItem.type.substr(11)}}" class="form-control" [(ngModel)]="formItem.value">
+                    <input *ngIf="formItem.type=='horizontal_password'" type="password" class="form-control" [(ngModel)]="formItem.virtual_value">
+                </div>
+            </div>
+
+            <!-- form item_control -->
+            <div *ngIf="showAble(contentData, formItem) && formItem.type=='list_control'"  class="form-group padding-top-20 row {{formItem.follow?'padding-left-20':''}}">
+                <button  class="sme-button-trigger sme-button-auto-width sme-margin-bottom-xs" (click)="createRunsOnec(formItem.lists)"><span class="sme-icon sme-icon-add sme-margin-right-xs"></span> Add</button>
+                <div *ngFor="let itemv of formItem.lists; let listitemi=index;" class="sme-margin-bottom-sm">
+                    <input type="text" [(ngModel)]="itemv.label" required>
+                    <button  class="sme-button-trigger sme-button-auto-width" (click)="moveDownItemControl(formItem.lists, listitemi)"><span class="sme-icon sme-icon-chevronDown"></span></button>
+                    <button  class="sme-button-trigger sme-button-auto-width" (click)="moveUpItemControl(formItem.lists, listitemi)"><span class="sme-icon sme-icon-chevronUp"></span></button>
+                    <button  class="sme-button-trigger sme-button-auto-width" (click)="removeItemControl(formItem.lists, itemv)"><span class="sme-icon sme-icon-clear sme-color-error"></span></button>
+                </div>    
+            </div>
+
+            <!-- child counter -->
+            <div class="form-group padding-top-20" *ngIf="showAble(contentData, formItem) && formItem.type=='child_counter'" >
+                <label>{{formItem.label}}</label>
+                <input type="text" value="{{formItem.navItems?formItem.navItems.length:''}}" readonly>
+            </div>
+            
+            <!-- saved library list -->
+            <div *ngIf="showAble(contentData, formItem) && formItem.type=='existing_disk_list'"  class="form-group padding-top-20 {{formItem.follow?'padding-left-20':''}}">
+                <label class="form-check-label">{{formItem.label}}</label>
+                
+                <div class="sme-select">
+                    <select [(ngModel)]="selectedLibrary" (change)="selectedLibraryChanged()">
+                        <option *ngFor="let opt of hddList" value="{{opt.id}}" [selected]="formItem.value == opt.id">{{opt.path}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- saved library list -->
+            <div *ngIf="showAble(contentData, formItem) && formItem.type=='vnet_select'"  class="form-group padding-top-20 {{formItem.follow?'padding-left-20':''}}">
+                <label class="form-check-label">{{formItem.label}}</label>
+                <div class="sme-select">
+                    <select [(ngModel)]="formItem.value">
+                        <option *ngFor="let opt of vnetList" value="{{opt.vlanid}}" [selected]="formItem.value == opt.vlanid">{{opt.name}}</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

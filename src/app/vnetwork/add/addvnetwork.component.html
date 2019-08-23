@@ -1,0 +1,22 @@
+<sme-dialog #dialog dialogMode="pane" class=".sme-layout-dialog-pane .sme-layer-dialog	">
+    <sme-dialog-header>
+        <h3>Add New Virtual Network</h3>
+    </sme-dialog-header>
+    <sme-dialog-content>
+        
+        <div class="sme-form-field">
+            <label class="sme-arrange-stack-h">Virtual Network Name</label>
+            <input type="text" [(ngModel)]="vnetName" required>
+        </div>
+
+        <div class="sme-form-field">
+            <label class="sme-arrange-stack-h">VLAN ID</label>
+            <input type="text" [(ngModel)]="vnetVlan" required>
+        </div>
+        
+    </sme-dialog-content>
+    <sme-dialog-footer class="sme-layout-float-right">
+        <button type="button" (click)="onCancel()">Close</button>
+        <button type="button" class="sme-button-primary" (click)="addNew()">Save</button>
+    </sme-dialog-footer>
+</sme-dialog>

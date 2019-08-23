@@ -1,0 +1,31 @@
+<div class="sme-layout-absolute sme-position-inset-none sme-arrange-stack-v sme-position-horizontal-md">
+    <h2 class="sme-position-flex-none sme-margin-bottom-xs">Add to Component</h2>
+
+    <div class="sme-position-flex-none">
+        Path:
+        <input type="text" [(ngModel)]="treePath" >
+        <button (click)="loadLibrary()">Load</button>
+        <button (click)="refreshSampleData()">Refresh</button>
+    </div>
+    <div class="sme-layout-relative sme-position-flex-auto">
+        <sme-tree-table 
+            [items]="libraryInfo" 
+            [(selection)]="selectedData1" 
+            class="sme-layout-absolute sme-position-inset-none sme-margin-bottom-xxxl" 
+            selectionMode="multiple" 
+            [rememberTreeNodeToggle]="false" 
+            [rememberSelection]="false" 
+            [getItemIdentityFunction]="getSampleDataItemIdentity"
+        >
+            <sme-tree-table-column field="label" header="Name" sortable="true" width="40%"></sme-tree-table-column>
+            <sme-tree-table-column field="ext" header="Extension" sortable="true"></sme-tree-table-column>
+            <sme-tree-table-column field="createDateTime" header="Creation Date Time" sortable="true"></sme-tree-table-column>
+            <sme-tree-table-column field="modificationDateTime" header="Modification Date Time" sortable="true"></sme-tree-table-column>
+        </sme-tree-table>
+        <div class="sme-layout-absolute sme-position-bottom-xs">
+            <button (click)="goBack()">Cancel</button>
+            <button (click)="addLibrary()" class="sme-button-primary">Add</button>
+        </div>
+    </div>
+
+</div>

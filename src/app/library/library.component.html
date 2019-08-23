@@ -1,0 +1,22 @@
+
+
+<div class="sme-layer-dialog sme-padding-right-lg" style="text-align:right;position:absolute;z-index: 1000;right:10px;top:0px;;">
+    <button (click)="gotoLibrary()" class="sme-layout-action-bar-item-height sme-button-trigger sme-button-auto-width sme-margin-right-xs">Library</button>
+    <button (click)="gotoVnetwork()" class="sme-layout-action-bar-item-height sme-button-trigger sme-button-auto-width sme-margin-right-xs">Virtual Networks</button>
+  </div>
+  <sme-master-view #masterView header="Libraries" [showGroup]="false" [showFilter]="false" [showRefresh]="false" [total]="libraryData.length"
+    [selection]="selectedLibrary" [filterActive]="false" [groupActive]="false" [showSelection]="false" (clearSelection)="selection=null">
+    <sme-action-bar #actionBar>
+      <sme-action-button #action text="Add" iconClass="sme-icon sme-icon-add" (execute)="doAction('add')"></sme-action-button>
+      <sme-action-button #action text="Remove" iconClass="sme-icon sme-icon-delete" (execute)="doAction('remove')" [enabled]="selectedLibrary!==null"></sme-action-button>
+      <sme-action-button #action text="Back" iconClass="sme-icon sme-icon-back" (execute)="doAction('back')"></sme-action-button>
+    </sme-action-bar>
+    <sme-data-table #smeDataTable [items]="libraryData" [(selection)]="selectedLibrary">
+      <sme-data-table-column field="name" header="Name" sortable="false" [searchable]="false"></sme-data-table-column>
+      <sme-data-table-column field="type" header="Type" sortable="false" [searchable]="false"></sme-data-table-column>
+      <sme-data-table-column field="path" header="Path" sortable="false" [searchable]="false"></sme-data-table-column>
+      <sme-data-table-column field="description" header="Description" sortable="false" [searchable]="false"></sme-data-table-column>
+    </sme-data-table>
+  </sme-master-view>
+  <sme-confirmation-dialog id="confirmation-dialog"></sme-confirmation-dialog>
+  

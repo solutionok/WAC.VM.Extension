@@ -1,0 +1,20 @@
+
+
+<div class="sme-layer-dialog sme-padding-right-lg" style="text-align:right;position:absolute;z-index: 100;right:10px;top:0px;;">
+  <button (click)="gotoLibrary()" class="sme-layout-action-bar-item-height sme-button-trigger sme-button-auto-width sme-margin-right-xs">Library</button>
+  <button (click)="gotoVnetwork()" class="sme-layout-action-bar-item-height sme-button-trigger sme-button-auto-width sme-margin-right-xs">Virtual Networks</button>
+</div>
+<sme-master-view #masterView header="Virtual Machine Templates" [showGroup]="false" [showFilter]="false" [showRefresh]="false" [total]="templateData.length"
+  [selection]="selectedTemplateId" [filterActive]="false" [groupActive]="false" [showSelection]="false"
+  (group)="groupActive = !groupActive; alert('group active: ' + groupActive)" (clearSelection)="selection=null">
+  <sme-action-bar #actionBar>
+    <sme-action-button #action *ngFor="let wi of wizardItems;" [text]="wi.text" [iconClass]="'sme-icon ' + wi.icon" (execute)="doAction(wi.id)" [enabled]="wi.id==='create'||selectedTemplateId!==null"></sme-action-button>
+  </sme-action-bar>
+  <sme-data-table #smeDataTable [items]="templateData" [(selection)]="selectedTemplateId">
+    <sme-data-table-column field="name" header="Name" sortable="false" [searchable]="false">
+    </sme-data-table-column>
+    <sme-data-table-column field="os" header="OS" sortable="false" [searchable]="false"></sme-data-table-column>
+    <sme-data-table-column field="description" header="Description" sortable="false" [searchable]="false"></sme-data-table-column>
+  </sme-data-table>
+</sme-master-view>
+<sme-confirmation-dialog id="confirmation-dialog"></sme-confirmation-dialog>

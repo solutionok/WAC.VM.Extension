@@ -1,0 +1,60 @@
+<div class="sme-layout-absolute sme-position-inset-none sme-arrange-stack-v">
+    <section class="sme-layout-absolute" *ngIf="wizardItems.length">
+      <span class="tab-item"  [ngClass]="{'active' : i == activetabIndex}"
+        (click)="activedNav=wizardItems[i].navItems[0]; activetabIndex=i; wizardItem=wizardItems[i]"
+        *ngFor="let wi of wizardItems; let i = index">{{wi.title}}</span>
+    </section>
+   
+    <sme-split-view class="" style="top:35px;" #sv orientation="left" *ngIf="wizardItems.length && wizardItem">
+      <sme-split-view-pane>
+        <div class="sme-position-flex-none sme-arrange-stack-h title sme-padding-left-xs" style="min-width:250px;width:100%;">
+          <span class="sme-position-flex-auto text sme-padding-top-xs"><strong>Properties</strong></span>
+          <button class="sme-button-trigger sme-button-auto-width sme-position-flex-none" (click)="sv.togglePane()">
+            <span class="sme-icon" [ngClass]="{ 'sme-icon-chevronLeft': sv.isExpanded, 'sme-icon-chevronRight': !sv.isExpanded }"></span>
+          </button>
+        </div>
+        
+        <ul class="sme-position-flex-auto sme-arrange-overflow-hide-x sme-arrange-overflow-auto-y sme-padding-bottom-sm sme-padding-left-xs sme-list leftpanel-ul" 
+            style="width:100%!important;list-style: none;" [ngClass]="{'sme-width-xxl':!sv.isExpanded}"  *ngIf="wizardItems.length && wizardItem">
+          <li *ngFor="let navItem of wizardItem.navItems">
+            <a (click)="activatingNav(wizardItem, navItem)" class="{{activedNav==navItem?'active-nav':''}}" href="javascript:;">{{navItem.title}}</a>
+        
+            <ul *ngIf="navItem.navItems">
+              <li *ngFor="let childNav of navItem.navItems" style="padding-left:15px;">
+                <a (click)="activatingNav(wizardItem, childNav)" class="{{activedNav==childNav?'active-nav':''}}" href="javascript:;">{{childNav.title}}</a>
+    
+                <ul *ngIf="childNav.navItems">
+                    <li *ngFor="let grandsonNav of childNav.navItems" style="padding-left:30px;">
+                        <a (click)="activatingNav(wizardItem.navItems, grandsonNav)" class="{{activedNav==grandsonNav?'active-nav':''}}" href="javascript:;">{{grandsonNav.title}}</a>
+                    </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </sme-split-view-pane>
+  
+      <sme-split-view-content>
+        <div class="sme-padding-inset-sm sme-margin-bottom-md">
+          <formPanel [tabindex]="activetabIndex" [contentData]="activedNav" [vswitchdata]="vswitchdata"></formPanel>
+        </div>
+        <div class="sme-layout-absolute sme-position-bottom-xxs sme-position-left-xs">
+          <button class="prev-btn sme-button-primary" [disabled]="activetabIndex == 0" (click)="activedNav=wizardItems[activetabIndex-1].navItems[0];wizardItem=wizardItems[activetabIndex-1];activetabIndex=activetabIndex-1;">Previous</button>
+          <button class="next-btn sme-button-primary" [disabled]="activetabIndex == wizardItems.length - 1"
+            (click)="activedNav=wizardItems[activetabIndex+1].navItems[0];wizardItem=wizardItems[activetabIndex+1];activetabIndex=activetabIndex+1;">Next</button>
+          <button class="deploy-btn sme-button-primary" (click)="deployTemplate()">Deploy</button>
+          <button class="back-btn" (click)="goBack()">Cancel</button>
+        </div>
+      </sme-split-view-content>
+  
+    </sme-split-view>
+    
+    <sme-message-dialog id="edit-result-dialog"></sme-message-dialog>
+    
+  </div>
+  
+  <div *ngIf="excutingPowerShell===true" class="sme-layer-dialog sme-layout-absolute sme-position-inset-none sme-layer-above sme-scheme-backdrop-opaque">
+    <div class="sme-progress sme-progress-indeterminate-local sme-position-center" role="progressbar" aria-valuetext="Loading..." tabindex="0" aria-label="indeterminate local small progress bar"> 
+      <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> 
+    </div>
+  </div>
