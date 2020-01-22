@@ -6,6 +6,7 @@ import { AppContextService, AuthorizationService, NavigationService } from '@mic
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
+
 export class AppComponent implements OnDestroy, OnInit {
     constructor(
         private appContext: AppContextService,  private navigationService: NavigationService) {
